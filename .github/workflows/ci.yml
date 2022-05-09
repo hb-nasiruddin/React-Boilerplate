@@ -4,11 +4,11 @@ on: [push]
 
 jobs:
   build:
-    name: Build
+    name: Lint & Test
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        node_version: [16]
+        node_version: [14]
 
     steps:
       - uses: actions/checkout@v1
