@@ -1,3 +1,4 @@
+name: Pre Deploy
 on:
   # Trigger analysis when pushing in master or pull requests, and when creating
   # a pull request.
@@ -8,8 +9,8 @@ on:
       types: [opened, synchronize, reopened]
 
 jobs:
-  Pre-Deploy:
-    name: Lint, Test & Build
+  linting:
+    name: Lint
     runs-on: ubuntu-18.04
     strategy:
       matrix:
@@ -27,16 +28,46 @@ jobs:
           npm install # or yarn install
           npm run lint # or yarn lint
 
+  testing:
+    name: Test
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        node_version: [14]
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Use Node.js ${{ matrix.node_version }}
+        uses: actions/setup-node@v1
+        with:
+          node_version: ${{ matrix.node_version }}
+
+      - name: run Install and Lint
+        run: |
+          npm install # or yarn install
+
       - name: run Test
         run: |
           npm run test # or yarn test
 
+  building:
+    name: Build
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        node_version: [14]
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Use Node.js ${{ matrix.node_version }}
+        uses: actions/setup-node@v1
+        with:
+          node_version: ${{ matrix.node_version }}
+
+      - name: run Install and Lint
+        run: |
+          npm install # or yarn install
+
       - name: run Build
         run: |
           npm run build # or yarn build
-
-      - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
