@@ -29,6 +29,8 @@ jobs:
           npm run lint # or yarn lint
 
   testing:
+    if: ${{ always() }}
+    needs: linting
     name: Test
     runs-on: ubuntu-18.04
     strategy:
@@ -51,6 +53,8 @@ jobs:
           npm run test # or yarn test
 
   building:
+    if: ${{ always() }}
+    needs: [linting, testing]
     name: Build
     runs-on: ubuntu-18.04
     strategy:
