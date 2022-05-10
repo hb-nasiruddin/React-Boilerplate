@@ -1,0 +1,50 @@
+name: Lint, Test & Build
+
+on:
+  # Trigger analysis when pushing in master or pull requests, and when creating
+  # a pull request.
+  push:
+    branches:
+      - master
+  pull_request:
+      types: [opened, synchronize, reopened]
+
+jobs:
+  lint:
+    name: Lint, Test & Build
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        node_version: [14]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node_version }}
+        uses: actions/setup-node@v1
+        with:
+          node_version: ${{ matrix.node_version }}
+
+      - name: run Install and Lint
+        run: |
+          npm install # or yarn install
+          npm run lint # or yarn lint
+
+      - name: run Test
+        run: |
+          npm run test # or yarn test
+
+      - name: run Build
+        run: |
+          npm run build # or yarn build
+
+  sonarcloud:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        # Disabling shallow clone is recommended for improving relevancy of reporting
+        fetch-depth: 0
+    - name: SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
