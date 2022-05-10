@@ -44,12 +44,9 @@ jobs:
         with:
           node_version: ${{ matrix.node_version }}
 
-      - name: run Install and Lint
+      - name: run Install and Test
         run: |
           npm install # or yarn install
-
-      - name: run Test
-        run: |
           npm run test # or yarn test
 
   building:
@@ -68,10 +65,7 @@ jobs:
         with:
           node_version: ${{ matrix.node_version }}
 
-      - name: run Install and Lint
+      - name: run Install and Build
         run: |
           npm install # or yarn install
-
-      - name: run Build
-        run: |
           npm run build # or yarn build
