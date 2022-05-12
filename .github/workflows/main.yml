@@ -28,30 +28,30 @@ jobs:
           npm ci # or yarn install
           npm run lint # or yarn lint
 
-  testing:
-    if: ${{ always() }}
-    needs: linting
-    name: Test
-    runs-on: ubuntu-18.04
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x, 14.x, 15.x]
-    steps:
-      - uses: actions/checkout@v1
+  # testing:
+  #   if: ${{ always() }}
+  #   needs: linting
+  #   name: Test
+  #   runs-on: ubuntu-18.04
+  #   strategy:
+  #     matrix:
+  #       node-version: [10.x, 12.x, 14.x, 15.x]
+  #   steps:
+  #     - uses: actions/checkout@v1
 
-      - name: Use Node.js ${{ matrix.node_version }}
-        uses: actions/setup-node@v1
-        with:
-          node_version: ${{ matrix.node_version }}
+  #     - name: Use Node.js ${{ matrix.node_version }}
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node_version: ${{ matrix.node_version }}
 
-      - name: run Install and Test
-        run: |
-          npm ci # or yarn install
-          npm run test # or yarn test
+  #     - name: run Install and Test
+  #       run: |
+  #         npm ci # or yarn install
+  #         npm run test # or yarn test
 
   building:
     if: ${{ always() }}
-    needs: [linting, testing]
+    needs: [linting]
     name: Build
     runs-on: ubuntu-18.04
     strategy:
@@ -67,5 +67,25 @@ jobs:
 
       - name: run Install and Build
         run: |
-          npm install # or yarn install
+          npm ci # or yarn install
           npm run build # or yarn build
+  cypress-run:
+    if: ${{ always() }}
+    needs: [linting, building]
+    name: Build
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x, 15.x]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node_version }}
+        uses: actions/setup-node@v1
+        with:
+          node_version: ${{ matrix.node_version }}
+
+      - name: run Install and Build
+        run: |
+          npm ci # or yarn install
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
