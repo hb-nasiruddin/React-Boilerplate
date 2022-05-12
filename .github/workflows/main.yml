@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x, 15.x]
+        node-version: [14.x]
     steps:
       - uses: actions/checkout@v1
 
@@ -35,7 +35,7 @@ jobs:
   #   runs-on: ubuntu-18.04
   #   strategy:
   #     matrix:
-  #       node-version: [10.x, 12.x, 14.x, 15.x]
+  #       node-version: [14.x]
   #   steps:
   #     - uses: actions/checkout@v1
 
@@ -56,7 +56,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x, 15.x]
+        node-version: [14.x]
     steps:
       - uses: actions/checkout@v1
 
@@ -72,11 +72,11 @@ jobs:
   cypress-run:
     if: ${{ always() }}
     needs: [linting, building]
-    name: Build
+    name: Cypress Run
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x, 15.x]
+        node-version: [14.x]
     steps:
       - uses: actions/checkout@v1
       - name: Use Node.js ${{ matrix.node_version }}
