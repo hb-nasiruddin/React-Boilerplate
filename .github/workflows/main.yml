@@ -70,34 +70,46 @@ jobs:
           npm ci # or yarn install
           npm run build # or yarn build
   cypress-run:
-    if: ${{ always() }}
-    needs: [linting, building]
-    name: Cypress Run
-    # runs-on: ubuntu-20.04
-    # strategy:
-    #   matrix:
-    #     node-version: [14.x]
-    # steps:
-    #   - uses: actions/checkout@v2
-    #   - name: Use Node.js ${{ matrix.node_version }}
-    #     uses: actions/setup-node@v2
-    #     with:
-    #       node_version: ${{ matrix.node_version }}
-
-    #   - name: run Install and Build
-    #     run: |
-    #       npm ci # or yarn install
-    #   - name: Cypress run
-    #     uses: cypress-io/github-action@v2
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Cypress tests
-        uses: ./
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
         with:
           build: npm run build
           start: npm start
-          wait-on: 'http://localhost:3000'
-          config: baseUrl=http://localhost:3000
+  # cypress-run:
+  #   if: ${{ always() }}
+  #   needs: [linting, building]
+  #   name: Cypress Run
+  #   # runs-on: ubuntu-20.04
+  #   # strategy:
+  #   #   matrix:
+  #   #     node-version: [14.x]
+  #   # steps:
+  #   #   - uses: actions/checkout@v2
+  #   #   - name: Use Node.js ${{ matrix.node_version }}
+  #   #     uses: actions/setup-node@v2
+  #   #     with:
+  #   #       node_version: ${{ matrix.node_version }}
+
+  #   #   - name: run Install and Build
+  #   #     run: |
+  #   #       npm ci # or yarn install
+  #   #   - name: Cypress run
+  #   #     uses: cypress-io/github-action@v2
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v2
+
+  #     - name: Cypress tests
+  #       uses: ./
+  #       with:
+  #         build: npm run build
+  #         start: npm start
+  #         wait-on: 'http://localhost:3000'
+  #         config: baseUrl=http://localhost:3000
