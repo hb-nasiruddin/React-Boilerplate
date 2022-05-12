@@ -69,7 +69,9 @@ jobs:
         run: |
           npm ci # or yarn install
           npm run build # or yarn build
-  cypress-run:
+  cypress:
+    if: ${{ always() }}
+    needs: [linting, building]
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
