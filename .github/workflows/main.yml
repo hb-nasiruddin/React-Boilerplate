@@ -97,7 +97,6 @@ jobs:
       - name: Cypress tests
         uses: ./
         with:
-          working-directory: examples/config
           build: npm run build
           start: npm start
           wait-on: 'http://localhost:3333'
