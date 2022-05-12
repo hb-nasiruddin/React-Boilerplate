@@ -25,7 +25,7 @@ jobs:
 
       - name: run Install and Lint
         run: |
-          npm ci # or yarn install
+          npm i # or yarn install
           npm run lint # or yarn lint
 
   # testing:
@@ -46,7 +46,7 @@ jobs:
 
   #     - name: run Install and Test
   #       run: |
-  #         npm ci # or yarn install
+  #         npm i # or yarn install
   #         npm run test # or yarn test
 
   building:
@@ -67,7 +67,7 @@ jobs:
 
       - name: run Install and Build
         run: |
-          npm ci # or yarn install
+          npm i # or yarn install
           npm run build # or yarn build
   cypress:
     if: ${{ always() }}
@@ -101,7 +101,7 @@ jobs:
 
   #   #   - name: run Install and Build
   #   #     run: |
-  #   #       npm ci # or yarn install
+  #   #       npm i # or yarn install
   #   #   - name: Cypress run
   #   #     uses: cypress-io/github-action@v2
   #   runs-on: ubuntu-20.04
