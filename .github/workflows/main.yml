@@ -72,7 +72,7 @@ jobs:
   cypress:
     if: ${{ always() }}
     needs: [linting, building]
-    name: Cypress
+    name: Cypress Testing
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
