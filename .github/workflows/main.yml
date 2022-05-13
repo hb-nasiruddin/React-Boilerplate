@@ -116,45 +116,45 @@ jobs:
   #         wait-on: 'http://localhost:3000'
   #         config: baseUrl=http://localhost:3000
 
-amplify:
-  if: ${{ always() }}
-  needs: [linting, building, cypress]
-  name: test amplify-cli-action
-  runs-on: ubuntu-latest
+  amplify:
+    if: ${{ always() }}
+    needs: [linting, building, cypress]
+    name: test amplify-cli-action
+    runs-on: ubuntu-latest
 
-  strategy:
-    matrix:
-      node-version: [14.x]
+    strategy:
+      matrix:
+        node-version: [14.x]
 
-  steps:
-  - uses: actions/checkout@v1
+    steps:
+    - uses: actions/checkout@v1
 
-  - name: use node.js ${{ matrix.node-version }}
-    uses: actions/setup-node@v1
-    with:
-      node-version: ${{ matrix.node-version }}
+    - name: use node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
 
-  - name: configure amplify
-    uses: ambientlight/amplify-cli-action@0.3.0
-    with:
-      amplify_command: configure
-      amplify_env: prod
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: us-east-1
+    - name: configure amplify
+      uses: ambientlight/amplify-cli-action@0.3.0
+      with:
+        amplify_command: configure
+        amplify_env: prod
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: us-east-1
 
-  - name: run Install and Build
-    run: |
-      npm i # or yarn install
-      npm run build # or yarn build
+    - name: run Install and Build
+      run: |
+        npm i # or yarn install
+        npm run build # or yarn build
 
-  - name: deploy
-    uses: ambientlight/amplify-cli-action@0.3.0
-    with:
-      amplify_command: publish
-      amplify_env: dev
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: us-east-1
+    - name: deploy
+      uses: ambientlight/amplify-cli-action@0.3.0
+      with:
+        amplify_command: publish
+        amplify_env: dev
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: us-east-1
